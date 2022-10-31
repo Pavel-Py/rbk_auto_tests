@@ -1,4 +1,5 @@
 import os
+
 import pytest
 
 from selenium import webdriver
@@ -6,7 +7,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def browser():
     s = Service(os.path.join(os.path.curdir, 'chromedriver'))
     options = Options()
