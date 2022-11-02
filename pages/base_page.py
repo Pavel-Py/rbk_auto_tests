@@ -1,10 +1,12 @@
 from selenium.common import NoSuchElementException
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as ec
 
 
 class BasePage:
-    def __init__(self, browser, url='https://www.rbc.ru/', timeout=2):
+    def __init__(self, browser, timeout=2):
         self.browser = browser
-        self.url = url
+        self.url = 'https://www.rbc.ru/'
         self.browser.implicitly_wait(timeout)
 
     def open(self):
@@ -43,3 +45,9 @@ class BasePage:
 
     def get_current_url(self):
         return self.browser.current_url
+
+    def fill_in_field(self, method, selector, data):
+        self.browser.find_element(method, selector).send_keys(data)
+
+    def wait_url_change(self):
+        WebDriverWait(self.browser, 5).until(ec.url_changes(self.url))

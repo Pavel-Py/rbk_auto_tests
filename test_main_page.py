@@ -1,9 +1,6 @@
-import time
 
 import pytest
-from selenium.webdriver.common.by import By
 
-from pages.locators import MainPageLocators
 from pages.main_page import MainPage
 
 

@@ -10,3 +10,11 @@ class MainPageLocators:
     SUCCESS_SUBSCRIBE_TEXT = (By.CSS_SELECTOR, '.subscribe__text[style="display: block;"]')
     AUTH_TOP_MENU = (By.CSS_SELECTOR, '.topline__auth__link')
     AUTH_TOP_MENU_ENTER = (By.XPATH, '//div[@class="topline__auth__profile__menu"]/div[1]/a')
+
+
+class AuthPageLocators:
+    LOGIN_TAB = (By.CSS_SELECTOR, 'div[data-type="enter"]')
+    EMAIL_FIELD = (By.CSS_SELECTOR, '.js-login-validate input[name="email"]')
+    PASS_FIELD = (By.CSS_SELECTOR, '.js-login-validate input[name = "password"]')
+    ENTER_BUTTON = (By.CSS_SELECTOR, '.js-login-validate .paywall__auth__form__submit')
+    LOGIN_ERROR_BLOCK = (By.XPATH, '//div[@style="display: block;"]')
