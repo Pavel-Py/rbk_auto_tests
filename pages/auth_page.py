@@ -30,3 +30,9 @@ class AuthPage(BasePage):
         login, password = data
         self.user_try_authorise(login, password)
         assert error_text == self.get_text(*AuthPageLocators.LOGIN_ERROR_BLOCK)
+
+    def should_be_empty_field_error(self, data):
+        error_text = 'Не все поля заполнены'
+        login, password = data
+        self.user_try_authorise(login, password)
+        assert error_text == self.get_text(*AuthPageLocators.LOGIN_ERROR_BLOCK)

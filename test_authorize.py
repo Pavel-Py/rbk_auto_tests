@@ -20,3 +20,13 @@ def test_user_cant_auth_with_invalid_data(session_browser, data):
     page.open()
     page.select_login_tab()
     page.should_be_incorrect_password_error(data)
+
+
+@pytest.mark.parametrize('data', [('testmail2024@mail.ru', ''),
+                                  ('', 'password')
+                                  ])
+def test_user_cant_auth_with_empty_fields(session_browser, data):
+    page = AuthPage(session_browser)
+    page.open()
+    page.select_login_tab()
+    page.should_be_empty_field_error(data)
