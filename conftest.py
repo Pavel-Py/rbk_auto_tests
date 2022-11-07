@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 import pytest
 
@@ -9,7 +10,8 @@ from selenium.webdriver.chrome.service import Service
 
 @pytest.fixture(scope='function')
 def everytime_new_browser():
-    s = Service(os.path.join(os.path.curdir, 'chromedriver'))
+    base_dir = Path(__file__).resolve().parent
+    s = Service(os.path.join(base_dir, 'chromedriver'))
     options = Options()
     options.add_argument("--no-sandbox")
     options.add_argument("--window-size=1600,800")

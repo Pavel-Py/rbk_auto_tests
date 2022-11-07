@@ -1,5 +1,6 @@
 import time
 
+import allure
 from selenium.webdriver.common.by import By
 
 from .base_page import BasePage
@@ -12,7 +13,8 @@ class AuthPage(BasePage):
         self.url = 'https://auth.rbc.ru/login'
 
     def select_login_tab(self):
-        self.click_to_element(*AuthPageLocators.LOGIN_TAB)
+        with allure.step('Выбор авторизации'):
+            self.click_to_element(*AuthPageLocators.LOGIN_TAB)
 
     def user_try_authorise(self, login, password):
         self.fill_in_field(*AuthPageLocators.EMAIL_FIELD, login)
@@ -23,7 +25,8 @@ class AuthPage(BasePage):
         url_after_auth = "https://auth.rbc.ru/profile/payment"
         self.user_try_authorise(login, password)
         self.wait_url_change()
-        assert self.get_current_url() == url_after_auth
+        with allure.step('Попытка авторизоваться'):
+            assert self.get_current_url() == url_after_auth
 
     def should_be_incorrect_password_error(self, data):
         error_text = 'Пользователя с таким e-mail не существует или введен неверный пароль'

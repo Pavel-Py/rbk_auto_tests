@@ -1,14 +1,16 @@
+import allure
 from selenium.common import NoSuchElementException
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 
 
 class BasePage:
-    def __init__(self, browser, timeout=2):
+    def __init__(self, browser, timeout=1):
         self.browser = browser
         self.url = 'https://www.rbc.ru/'
         self.browser.implicitly_wait(timeout)
 
+    @allure.step('Открытие URL-a')
     def open(self):
         return self.browser.get(self.url)
 
@@ -30,6 +32,7 @@ class BasePage:
             return True
         return False
 
+    @allure.step('Переход в открывшуюся вкладку')
     def switch_to_last_handle(self):
         handles = self.browser.window_handles
         self.browser.switch_to.window(handles[-1])
