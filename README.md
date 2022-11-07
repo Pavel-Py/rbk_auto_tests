@@ -14,3 +14,4 @@ ___
 ![Overview](https://github.com/Pavel-Py/rbk_auto_tests/blob/update_readme/images/report1.jpg "")
 
 ![suites](https://github.com/Pavel-Py/rbk_auto_tests/blob/update_readme/images/report1.jpg "")
+ 
