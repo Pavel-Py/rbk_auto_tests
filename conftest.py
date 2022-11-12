@@ -16,7 +16,7 @@ def everytime_new_browser():
     options.add_argument("--no-sandbox")
     options.add_argument("--window-size=1600,800")
     options.add_experimental_option("prefs", {"profile.default_content_setting_values.notifications": 1})
-    browser = webdriver.Chrome(service=s, options=options)
+    browser = webdriver.Chrome(options=options)
     yield browser
     browser.quit()
 
@@ -28,6 +28,6 @@ def session_browser():
     options.add_argument("--no-sandbox")
     options.add_argument("--window-size=1600,800")
     options.add_experimental_option("prefs", {"profile.default_content_setting_values.notifications": 1})
-    browser = webdriver.Chrome(service=s, options=options)
+    browser = webdriver.Chrome(options=options)
     yield browser
     browser.quit()
