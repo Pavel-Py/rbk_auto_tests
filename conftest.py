@@ -1,33 +1,32 @@
-import os
-from pathlib import Path
-
 import pytest
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
 
 
 @pytest.fixture(scope='function')
 def everytime_new_browser():
-    base_dir = Path(__file__).resolve().parent
-    s = Service(os.path.join(base_dir, 'chromedriver'))
     options = Options()
-    options.add_argument("--no-sandbox")
-    options.add_argument("--window-size=1600,800")
+    options.add_argument('--no-sandbox')
+    options.add_argument('--headless')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('--window-size=1600,800')
     options.add_experimental_option("prefs", {"profile.default_content_setting_values.notifications": 1})
+    options.add_argument("--enable-notifications")
     browser = webdriver.Chrome(options=options)
+
     yield browser
     browser.quit()
 
 
 @pytest.fixture(scope='session')
 def session_browser():
-    s = Service(os.path.join(os.path.curdir, 'chromedriver'))
     options = Options()
     options.add_argument("--no-sandbox")
-    options.add_argument("--window-size=1600,800")
     options.add_experimental_option("prefs", {"profile.default_content_setting_values.notifications": 1})
+    options.add_argument('--headless')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument("--window-size=1600,800")
     browser = webdriver.Chrome(options=options)
     yield browser
     browser.quit()

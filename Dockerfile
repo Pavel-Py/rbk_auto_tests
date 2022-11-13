@@ -10,15 +10,10 @@ RUN apk update && apk add --no-cache bash alsa-lib at-spi2-atk atk cairo cups-li
         gdk-pixbuf glib libgcc libjpeg-turbo libpng libwebp libx11 libxcomposite libxdamage libxext libxfixes \
         tzdata libexif udev xvfb zlib-dev chromium chromium-chromedriver
 
-# # Install chromedriver
-# RUN wget --no-verbose -O /tmp/chromedriver_linux64.zip https://chromedriver.storage.googleapis.com/107.0.5304.62/chromedriver_linux64.zip \
-#     && unzip /tmp/chromedriver_linux64.zip -d /opt/selenium \
-#     && rm /tmp/chromedriver_linux64.zip \
-#     && chmod 755 /opt/selenium/chromedriver \
-#     && ln -fs /opt/selenium/chromedriver /usr/bin/chromedriver
-
 WORKDIR /usr/app
 
 COPY . .
 
 RUN pip install -r requirements.txt
+
+CMD ["pytest", "--alluredir=results", "."]
