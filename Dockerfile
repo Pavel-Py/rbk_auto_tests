@@ -1,51 +1,25 @@
-FROM zenika/alpine-chrome
+FROM selenium/standalone-chrome:107.0
 
-USER root
-RUN apk add --no-cache chromium-chromedriver
-USER chrome
-ENTRYPOINT ["chromedriver","--allowed-ips=","--allowed-origins=*"]
+# install pip
+RUN sudo apt update && \
+    sudo apt upgrade -y && \
+    sudo apt install pip -y
 
+# install allure
+RUN sudo wget https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.19.0/allure-commandline-2.19.0.tgz \
+        -P /usr/local && \
+    sudo tar -xvf /usr/local/allure-commandline-2.19.0.tgz -C /usr/local/ && \
+    sudo ln -s /usr/local/allure-2.19.0/bin/allure /bin && \
+    sudo apt install openjdk-11-jdk -y
 
+WORKDIR /app
 
+COPY . .
 
+RUN pip install -r requirements.txt && \
+    sudo ln -s /home/seluser/.local/bin/pytest /bin/pytest
 
+EXPOSE 5050:5050
 
-
-
-
-# FROM python:alpine
-#
-# RUN apk add bash-completion
-#
-# # CMD ["/bin/bash"]
-#
-# # RUN wget https://chromedriver.storage.googleapis.com/107.0.5304.62/chromedriver_linux64.zip  \
-# #     && unzip -d /usr/local/bin chromedriver_linux64.zip
-#
-# RUN apk upgrade --no-cache --available \
-#     && apk add --no-cache \
-#       chromium \
-#       ttf-freefont \
-#       font-noto-emoji \
-#     && apk add --no-cache \
-#       --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing \
-#       font-wqy-zenhei
-# COPY local.conf /etc/fonts/local.conf
-#
-#
-# ENV LANG en_US.UTF-8
-# ENV LANGUAGE en_US:en
-# ENV LC_ALL en_US.UTF-8
-# ENV GLIBC_REPO=https://github.com/sgerrand/alpine-pkg-glibc
-# ENV GLIBC_VERSION=2.30-r0
-# RUN set -ex && \
-#     apk --update add libstdc++ curl ca-certificates && \
-#     for pkg in glibc-${GLIBC_VERSION} glibc-bin-${GLIBC_VERSION}; \
-#         do curl -sSL ${GLIBC_REPO}/releases/download/${GLIBC_VERSION}/${pkg}.apk -o /tmp/${pkg}.apk; done && \
-#     apk add --allow-untrusted /tmp/*.apk && \
-#     rm -v /tmp/*.apk && \
-#     /usr/glibc-compat/sbin/ldconfig /lib /usr/glibc-compat/lib
-#
-# CMD ["/bin/bash"]
-#
-# # apt-get install libgconf-2-4
+CMD pytest -v --tb=line --alluredir=/home/seluser/allure-results tests ; \
+    allure serve -p 5050 /home/seluser/allure-results

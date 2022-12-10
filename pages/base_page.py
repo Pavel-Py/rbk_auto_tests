@@ -5,7 +5,7 @@ from selenium.webdriver.support import expected_conditions as ec
 
 
 class BasePage:
-    def __init__(self, browser, timeout=1):
+    def __init__(self, browser, timeout=2):
         self.browser = browser
         self.url = 'https://www.rbc.ru/'
         self.browser.implicitly_wait(timeout)
