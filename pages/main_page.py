@@ -1,21 +1,26 @@
 import allure
-from selenium.webdriver.common.by import By
 
 from .locators import MainPageLocators
 from .base_page import BasePage
+from .page_elements import *
 
 
 class MainPage(BasePage):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.browser.get(self.url)
+        self.subscribe_push_window = SubscribeWindow(self.browser)
 
     @allure.step('Появляется пуш уведомление с предложением подписаться')
     def should_be_subscribe_push_allow(self):
-        assert self.is_element_present(*MainPageLocators.SUBSCRIBE_PUSH_ALLOW_VISIBLE), 'Уведомление не отображается'
+        assert self.subscribe_push_window.element_exist(), 'Уведомление не отображается'
 
-    @allure.step('ЛКМ по подписаться')
-    def apply_subscribe_push_allow(self):
-        self.click_to_element(*MainPageLocators.SUBSCRIBE_PUSH_ALLOW_YES)
+    @allure.step('Попытка подписаться')
+    def user_can_subscribe(self):
+        self.subscribe_push_window.click_yes_button()
+        self.switch_to_last_handle()
+        assert 'Вы успешно подписаны на оповещания от RBC.RU' in self.subscribe_push_window.get_subscribe_text()
+
 
     @allure.step('ЛКМ по отказаться')
     def refuse_subscribe_push_allow(self):

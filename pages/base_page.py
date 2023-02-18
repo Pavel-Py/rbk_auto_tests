@@ -10,20 +10,6 @@ class BasePage:
         self.url = 'https://www.rbc.ru/'
         self.browser.implicitly_wait(timeout)
 
-    @allure.step('Открытие URL-a')
-    def open(self):
-        return self.browser.get(self.url)
-
-    def click_to_element(self, method, selector):
-        element = self.browser.find_element(method, selector)
-        element.click()
-
-    def is_element_present(self, method, selector):
-        try:
-            self.browser.find_element(method, selector)
-        except NoSuchElementException:
-            return False
-        return True
 
     def is_not_element_present(self, method, selector):
         try:
@@ -37,8 +23,6 @@ class BasePage:
         handles = self.browser.window_handles
         self.browser.switch_to.window(handles[-1])
 
-    def get_text(self, method, selector):
-        return self.browser.find_element(method, selector).text
 
     def close_push_allow(self, method, selector):
         try:

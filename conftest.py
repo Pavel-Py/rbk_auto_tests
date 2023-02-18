@@ -5,17 +5,10 @@ from selenium.webdriver.chrome.options import Options
 
 
 @pytest.fixture(scope='function')
-def browser_for_pycharm():
-    s = Service(executable_path='/home/empty/PycharmProjects/rbk_auto_tests/venv/bin/chromedriver')
-    browser = webdriver.Chrome(service=s)
-    yield browser
-    browser.quit()
-
-@pytest.fixture(scope='function')
 def everytime_new_browser():
     options = Options()
     options.page_load_strategy = 'eager'
-    options.add_argument('--headless')
+    # options.add_argument('--headless')
     options.add_argument('--window-size=1600,800')
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--no-sandbox')
