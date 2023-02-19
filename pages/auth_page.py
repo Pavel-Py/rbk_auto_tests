@@ -1,7 +1,7 @@
 import allure
 
 from .base_page import BasePage
-from .locators import AuthPageLocators
+from elements.locators import AuthPageLocators
 
 
 class AuthPage(BasePage):

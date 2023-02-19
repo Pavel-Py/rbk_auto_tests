@@ -1,7 +1,6 @@
 import allure
 import pytest
 
-from conftest import everytime_new_browser
 from pages.main_page import MainPage
 
 
@@ -17,7 +16,6 @@ class TestSubscribeWindow:
     @allure.feature('Отказ от рассылки')
     def test_user_can_abandon_subscribe(self, everytime_new_browser):
         page = MainPage(everytime_new_browser)
-        page.open()
         page.should_be_subscribe_push_allow()
         page.refuse_subscribe_push_allow()
 

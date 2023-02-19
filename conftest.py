@@ -23,7 +23,7 @@ def everytime_new_browser():
 def session_browser():
     options = Options()
     options.page_load_strategy = 'eager'
-    options.add_argument('--headless')
+    # options.add_argument('--headless')
     options.add_argument('--window-size=1600,800')
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--no-sandbox')

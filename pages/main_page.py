@@ -1,31 +1,30 @@
 import allure
 
-from .locators import MainPageLocators
+from elements.locators import MainPageLocators
+from elements.subscribe_window_elements import *
 from .base_page import BasePage
-from .page_elements import *
 
 
 class MainPage(BasePage):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.browser.get(self.url)
-        self.subscribe_push_window = SubscribeWindow(self.browser)
+        self.browser.get('https://www.rbc.ru/')
+        self.subscribe_window = SubscribeWindow(self.browser)
 
     @allure.step('Появляется пуш уведомление с предложением подписаться')
     def should_be_subscribe_push_allow(self):
-        assert self.subscribe_push_window.element_exist(), 'Уведомление не отображается'
+        assert self.subscribe_window.window_is_exist(), 'Уведомление не отображается'
 
     @allure.step('Попытка подписаться')
     def user_can_subscribe(self):
-        self.subscribe_push_window.click_yes_button()
+        self.subscribe_window.click_yes_button()
         self.switch_to_last_handle()
-        assert 'Вы успешно подписаны на оповещания от RBC.RU' in self.subscribe_push_window.get_subscribe_text()
-
+        assert 'Вы успешно подписаны на оповещания от RBC.RU' in self.subscribe_window.get_result_text()
 
     @allure.step('ЛКМ по отказаться')
     def refuse_subscribe_push_allow(self):
-        self.click_to_element(*MainPageLocators.SUBSCRIBE_PUSH_ALLOW_NO)
-        assert self.is_element_present(*MainPageLocators.SUBSCRIBE_PUSH_ALLOW_HIDDEN), 'Уведомление не исчезло'
+        self.subscribe_window.click_no_button()
+        assert self.subscribe_window.window_is_hidden(), 'Уведомление не исчезло'
 
     @allure.step('Проверка успешности')
     def check_subscribe_success_text(self):
