@@ -1,4 +1,5 @@
 from elements.base_elements import BaseElements
+from pages.base_page import BasePage
 
 
 class SubscribeWindow(BaseElements):
@@ -8,17 +9,10 @@ class SubscribeWindow(BaseElements):
     result_text = '.subscribe__text[style="display: block;"]'
     hidden_window = '.push-allow[style="display: none;"]'
 
-    def window_is_exist(self):
-        return self.element_exist(self.method, self.window)
+    def should_be_subscribe_push_allow(self):
+        return self.is_present(self.window)
 
-    def click_yes_button(self):
-        self.click_to_element(self.method, self.yes_button)
-
-    def click_no_button(self):
-        self.click_to_element(self.method, self.no_button)
-
-    def get_result_text(self):
-        return self.get_text(self.method, self.result_text)
-
-    def window_is_hidden(self):
-        return self.element_exist(self.method, self.hidden_window)
+    def user_can_subscribe(self):
+        self.click_to(self.yes_button)
+        self.switch_to_last_handle()
+        return self.get_text(self.result_text)

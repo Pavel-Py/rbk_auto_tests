@@ -8,23 +8,23 @@ from .base_page import BasePage
 class MainPage(BasePage):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.browser.get('https://www.rbc.ru/')
+        self.open()
         self.subscribe_window = SubscribeWindow(self.browser)
 
     @allure.step('Появляется пуш уведомление с предложением подписаться')
     def should_be_subscribe_push_allow(self):
-        assert self.subscribe_window.window_is_exist(), 'Уведомление не отображается'
+        assert self.subscribe_window.should_be_subscribe_push_allow(), 'Уведомление не отображается'
 
     @allure.step('Попытка подписаться')
     def user_can_subscribe(self):
-        self.subscribe_window.click_yes_button()
-        self.switch_to_last_handle()
-        assert 'Вы успешно подписаны на оповещания от RBC.RU' in self.subscribe_window.get_result_text()
+        assert 'Вы успешно подписаны на оповещания от RBC.RU' in \
+               self.subscribe_window.user_can_subscribe(), 'Подписаться не удалось'
 
     @allure.step('ЛКМ по отказаться')
     def refuse_subscribe_push_allow(self):
-        self.subscribe_window.click_no_button()
-        assert self.subscribe_window.window_is_hidden(), 'Уведомление не исчезло'
+        element = self.subscribe_window
+        element.click_to(element.no_button)
+        assert element.is_present(element.hidden_window), 'Уведомление не исчезло'
 
     @allure.step('Проверка успешности')
     def check_subscribe_success_text(self):

@@ -9,18 +9,8 @@ class BasePage:
         self.browser = browser
         self.browser.implicitly_wait(timeout)
 
-
-    def is_not_element_present(self, method, selector):
-        try:
-            self.browser.find_element(method, selector)
-        except NoSuchElementException:
-            return True
-        return False
-
-    @allure.step('Переход в открывшуюся вкладку')
-    def switch_to_last_handle(self):
-        handles = self.browser.window_handles
-        self.browser.switch_to.window(handles[-1])
+    def open(self):
+        self.browser.get('https://www.rbc.ru/')
 
 
     def close_push_allow(self, method, selector):

@@ -31,8 +31,7 @@ class TestTopMenu:
                                                       ])
     def test_user_can_open_top_menu_links(self, session_browser, link_num_and_address):
         page = MainPage(session_browser)
-        page.open()
-        page.close_subscribe_push_allow()
+        page.subscribe_window.click_no_button()
         page.should_open_top_menu_link(link_num_and_address)
 
     @allure.feature('Переход на страницу авторизации')
