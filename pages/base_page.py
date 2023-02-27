@@ -9,9 +9,9 @@ class BasePage:
         self.browser = browser
         self.browser.implicitly_wait(timeout)
 
-    def open(self):
-        self.browser.get('https://www.rbc.ru/')
-
+    def open(self, url):
+        if self.browser.current_url == 'data:,':
+            self.browser.get(url)
 
     def close_push_allow(self, method, selector):
         try:

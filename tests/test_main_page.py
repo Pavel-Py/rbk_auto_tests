@@ -9,15 +9,13 @@ class TestSubscribeWindow:
     @allure.feature('Подписка на рассылку')
     # @pytest.mark.xfail('Сокрытие падающего теста')
     def test_user_can_subscribe(self, everytime_new_browser):
-        page = MainPage(everytime_new_browser)
-        page.should_be_subscribe_push_allow()
-        page.user_can_subscribe()
+        MainPage(everytime_new_browser).should_be_subscribe_push_allow()
+        MainPage(everytime_new_browser).user_can_subscribe()
 
     @allure.feature('Отказ от рассылки')
     def test_user_can_abandon_subscribe(self, everytime_new_browser):
-        page = MainPage(everytime_new_browser)
-        page.should_be_subscribe_push_allow()
-        page.refuse_subscribe_push_allow()
+        MainPage(everytime_new_browser).should_be_subscribe_push_allow()
+        MainPage(everytime_new_browser).refuse_subscribe_push_allow()
 
 
 @allure.suite('Главное меню')

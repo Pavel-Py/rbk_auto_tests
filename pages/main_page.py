@@ -8,7 +8,7 @@ from .base_page import BasePage
 class MainPage(BasePage):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.open()
+        self.open('https://www.rbc.ru/')
         self.subscribe_window = SubscribeWindow(self.browser)
 
     @allure.step('Появляется пуш уведомление с предложением подписаться')
