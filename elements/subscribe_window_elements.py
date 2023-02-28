@@ -3,16 +3,23 @@ from pages.base_page import BasePage
 
 
 class SubscribeWindow(BaseElements):
-    window = '.push-allow[style="display: block;"]'
-    yes_button = '.push-allow__button[data-type=yes]'
-    no_button = '.push-allow__button[data-type=no]'
-    result_text = '.subscribe__text[style="display: block;"]'
-    hidden_window = '.push-allow[style="display: none;"]'
+    WINDOW = '.push-allow[style="display: block;"]'
+    YES_BUTTON = '.push-allow__button[data-type=yes]'
+    NO_BUTTON = '.push-allow__button[data-type=no]'
+    RESULT_TEXT = '.subscribe__text[style="display: block;"]'
+    HIDDEN_WINDOW = '.push-allow[style="display: none;"]'
 
-    def should_be_subscribe_push_allow(self):
-        return self.is_present(self.window)
+    def window_is_present(self):
+        return self.is_present(self.WINDOW)
 
-    def user_can_subscribe(self):
-        self.click_to(self.yes_button)
+    def try_to_subscribe(self):
+        self.click_to(self.YES_BUTTON)
         self.switch_to_last_handle()
-        return self.get_text(self.result_text)
+        return self.get_text(self.RESULT_TEXT)
+
+    def refuse_subscribe(self):
+        self.click_to(self.NO_BUTTON)
+        return self.is_present(self.HIDDEN_WINDOW)
+
+    def close_subscribe_push_allow(self):
+        self.click_to(self.NO_BUTTON)

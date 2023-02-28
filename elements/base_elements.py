@@ -30,4 +30,7 @@ class BaseElements:
 
     def switch_to_last_handle(self):
         handles = self.browser.window_handles
-        self.browser.switch_to.window(handles[-1])
+        self.browser.switch_to.WINDOW(handles[-1])
+
+    def current_url(self):
+        return self.browser.current_url()
