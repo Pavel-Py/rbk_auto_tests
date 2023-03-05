@@ -1,8 +1,8 @@
 import allure
 
-from elements.locators import MainPageLocators
-from elements.main_menu_elements import MainMenu
-from elements.subscribe_window_elements import *
+from elements.top_left_menu import TopLeftMenu
+from elements.subscribe_window import SubscribeWindow
+from elements.top_right_menu import TopRightMenu
 from .base_page import BasePage
 
 
@@ -11,7 +11,9 @@ class MainPage(BasePage):
         super().__init__(*args, **kwargs)
         self.open('https://www.rbc.ru/')
         self.subscribe_window = SubscribeWindow(self.browser)
-        self.main_menu = MainMenu(self.browser)
+        self.top_left_menu = TopLeftMenu(self.browser)
+        self.top_right_menu = TopRightMenu(self.browser)
+
     @allure.step('Появляется пуш уведомление с предложением подписаться')
     def should_be_subscribe_push_allow(self):
         assert self.subscribe_window.window_is_present(), 'Уведомление не отображается'
@@ -22,24 +24,14 @@ class MainPage(BasePage):
                self.subscribe_window.try_to_subscribe(), 'Подписаться не удалось'
 
     @allure.step('ЛКМ по отказаться')
-    def refuse_subscribe_push_allow(self):
+    def can_refuse_subscribe_push_allow(self):
         assert self.subscribe_window.refuse_subscribe(), 'Уведомление не исчезло'
 
-    def open_top_menu_link(self, link_num, link):
-        assert self.main_menu.click_menu_button(link_num) == link, 'Переход состоялся'
+    @allure.step('Открывается ссылка из меню')
+    def should_open_top_menu_link(self, link_num: int, link: str):
+        assert self.top_left_menu.click_menu_button(link_num) == link, 'Страница не соответствует пункту меню'
 
-    # @allure.step('Закрыть окно выбора региона')
-    # def apply_geolocation_push_allow(self):
-    #     self.close_push_allow(*MainPageLocators.GEOLOCATION_PUSH_ALLOW_YES)
-    #
-    # @allure.step('Открывается ссылка из меню')
-    # def should_open_top_menu_link(self, link_number_and_address):
-    #     link_num, address = link_number_and_address
-    #     self.click_to_element(By.XPATH, f'//div[@class="topline__projects"]/div[{link_num}]')
-    #     assert self.browser.current_url == address, 'Страница не соответствует пункту меню'
-    #
-    # @allure.step('Открывается страница аутентификации')
-    # def should_open_auth_link(self):
-    #     self.click_to_element(*MainPageLocators.AUTH_TOP_MENU)
-    #     self.click_to_element(*MainPageLocators.AUTH_TOP_MENU_ENTER)
-    #     assert 'auth.rbc.ru' in self.get_current_url(), 'Не страница аутентификации'
+    @allure.step('Открывается страница аутентификации')
+    def should_open_auth_link(self):
+        self.top_right_menu.apply_geolocation_push_allow()
+        assert 'auth.rbc.ru' in self.top_right_menu.go_auth_page(), 'Не страница аутентификации'

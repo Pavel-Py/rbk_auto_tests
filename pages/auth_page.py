@@ -1,38 +1,26 @@
-import allure
-
+from elements.auth_menu import AuthMenu
 from .base_page import BasePage
-from elements.locators import AuthPageLocators
 
 
 class AuthPage(BasePage):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.url = 'https://auth.rbc.ru/login'
-
-    def select_login_tab(self):
-        with allure.step('Выбор авторизации'):
-            self.click_to_element(*AuthPageLocators.LOGIN_TAB)
-
-    def user_try_authorise(self, login, password):
-        self.fill_in_field(*AuthPageLocators.EMAIL_FIELD, login)
-        self.fill_in_field(*AuthPageLocators.PASS_FIELD, password)
-        self.click_to_element(*AuthPageLocators.ENTER_BUTTON)
+        self.open('https://auth.rbc.ru/login')
+        self.auth_menu = AuthMenu(self.browser)
 
     def user_should_authorise(self, login, password):
-        url_after_auth = "https://auth.rbc.ru/profile/payment"
-        self.user_try_authorise(login, password)
-        self.wait_url_change()
-        with allure.step('Попытка авторизоваться'):
-            assert self.get_current_url() == url_after_auth
+        self.auth_menu.select_login_tab()
+        self.auth_menu.try_to_authorize(login, password)
+        assert self.auth_menu.get_login_after_authorise() == login, 'Авторизация не удалась'
 
-    def should_be_incorrect_password_error(self, data):
+    def should_be_incorrect_password_error(self, login, password):
         error_text = 'Пользователя с таким e-mail не существует или введен неверный пароль'
-        login, password = data
-        self.user_try_authorise(login, password)
-        assert error_text == self.get_text(*AuthPageLocators.LOGIN_ERROR_BLOCK)
+        self.auth_menu.select_login_tab()
+        self.auth_menu.try_to_authorize(login, password)
+        assert error_text == self.auth_menu.get_login_error(), 'Сообщение не соответствует ошибке'
 
-    def should_be_empty_field_error(self, data):
+    def should_be_empty_field_error(self, login, password):
         error_text = 'Не все поля заполнены'
-        login, password = data
-        self.user_try_authorise(login, password)
-        assert error_text == self.get_text(*AuthPageLocators.LOGIN_ERROR_BLOCK)
+        self.auth_menu.select_login_tab()
+        self.auth_menu.try_to_authorize(login, password)
+        assert error_text == self.auth_menu.get_login_error(), 'Сообщение не соответствует ошибке'

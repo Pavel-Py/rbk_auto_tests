@@ -1,5 +1,8 @@
+import time
+
+from selenium.common import NoSuchElementException
+
 from elements.base_elements import BaseElements
-from pages.base_page import BasePage
 
 
 class SubscribeWindow(BaseElements):
@@ -22,4 +25,7 @@ class SubscribeWindow(BaseElements):
         return self.is_present(self.HIDDEN_WINDOW)
 
     def close_subscribe_push_allow(self):
-        self.click_to(self.NO_BUTTON)
+        try:
+            self.click_to(self.NO_BUTTON)
+        except NoSuchElementException:
+            pass
